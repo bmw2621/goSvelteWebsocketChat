@@ -8,23 +8,23 @@ import (
 
 // HandleInputMessage function is the primary handler for the websocket connection which listens for messages from clients
 func HandleInputMessage(from *Client, data []byte) {
-	var inputJson map[string]string
-	json.Unmarshal(data, &inputJson)
+	var inputJSON map[string]string
+	json.Unmarshal(data, &inputJSON)
 
-	log.Printf("New %v from: %v -> %v", inputJson["action"], from.username, inputJson["message"])
+	log.Printf("New %v from: %v -> %v", inputJSON["action"], from.username, inputJSON["message"])
 
 	var newMessageToAll Message
 
-	switch inputJson["action"] {
+	switch inputJSON["action"] {
 	case "post_message":
 		newMessageToAll = Message{
 			SenderID: from.id,
 			Username: from.username,
-			Message:  inputJson["message"],
+			Message:  inputJSON["message"],
 		}
 
 	case "initial_connection":
-		from.username = inputJson["username"]
+		from.username = inputJSON["username"]
 		newMessageToAll = Message{
 			SenderID: "System",
 			Username: "System",
